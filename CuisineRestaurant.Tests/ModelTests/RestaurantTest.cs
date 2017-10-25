@@ -95,5 +95,19 @@ namespace CuisineRestaurant.Test
       Assert.AreEqual(testRestaurant, foundRestaurant);
     }
 
+    [TestMethod]
+    public void Find_FindsDishInDatabase_Restaurant()
+    {
+      //Arrange
+      Restaurant testRestaurant = new Restaurant("KFC", 1, "8am - 10pm", "Chicken");
+      testRestaurant.Save();
+
+      //Act
+      Restaurant foundRestaurant = Restaurant.SearchDish("Chicken");
+
+      //Assert
+      Assert.AreEqual(testRestaurant, foundRestaurant);
+    }
+
   }
 }
