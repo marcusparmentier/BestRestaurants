@@ -119,6 +119,37 @@ namespace CuisineRestaurant.Models
       return newCuisine;
     }
 
+    public List<Restaurant> GetRestaurant()
+    {
+      List<Restaurant> allCuisineRestaurant = new List<Restaurant> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM restaurant WHERE cuisineId = @cuisineId;";
+
+      MySqlParameter CuisineId = new MySqlParameter();
+      CuisineId.ParameterName = "@cuisineId";
+      CuisineId.Value = this._id;
+      cmd.Parameters.Add(CuisineId);
+
+
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        string restaurantName = rdr.GetString(0);
+        int restaurantId = rdr.GetInt32(1);
+        int restaurantCuisineId = rdr.GetInt32(2);
+        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
+        allCuisineRestaurant.Add(newRestaurant);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+          conn.Dispose();
+      }
+      return allCuisineRestaurant;
+    }
+
     public static void DeleteAll()
     {
       MySqlConnection conn = DB.Connection();

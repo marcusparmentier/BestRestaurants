@@ -15,6 +15,7 @@ namespace CuisineRestaurant.Test
 
     public void Dispose()
     {
+      Restaurant.DeleteAll();
       Cuisine.DeleteAll();
     }
 
@@ -84,6 +85,24 @@ namespace CuisineRestaurant.Test
 
       //Assert
       Assert.AreEqual(testCuisine, foundCuisine);
+    }
+
+    [TestMethod]
+    public void GetRestaurants_RetrievesAllRestaurantsWithCuisine_RestaurantList()
+    {
+      Cuisine testCuisine = new Cuisine("Household chores");
+      testCuisine.Save();
+
+      Restaurant firstRestaurant = new Restaurant("Mow the lawn", testCuisine.GetId());
+      firstRestaurant.Save();
+      Restaurant secondRestaurant = new Restaurant("Do the dishes", testCuisine.GetId());
+      secondRestaurant.Save();
+
+
+      List<Restaurant> testRestaurantList = new List<Restaurant> {firstRestaurant, secondRestaurant};
+      List<Restaurant> resultRestaurantList = testCuisine.GetRestaurant();
+
+      CollectionAssert.AreEqual(testRestaurantList, resultRestaurantList);
     }
   }
 }
