@@ -139,7 +139,9 @@ namespace CuisineRestaurant.Models
         string restaurantName = rdr.GetString(0);
         int restaurantId = rdr.GetInt32(1);
         int restaurantCuisineId = rdr.GetInt32(2);
-        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
+        string restaurantHours = rdr.GetString(3);
+        string restaurantDish = rdr.GetString(4);
+        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantHours, restaurantDish, restaurantId);
         allCuisineRestaurant.Add(newRestaurant);
       }
       conn.Close();

@@ -90,12 +90,12 @@ namespace CuisineRestaurant.Test
     [TestMethod]
     public void GetRestaurants_RetrievesAllRestaurantsWithCuisine_RestaurantList()
     {
-      Cuisine testCuisine = new Cuisine("Household chores");
+      Cuisine testCuisine = new Cuisine("Orange Chicken");
       testCuisine.Save();
 
-      Restaurant firstRestaurant = new Restaurant("Mow the lawn", testCuisine.GetId());
+      Restaurant firstRestaurant = new Restaurant("KFC", testCuisine.GetId(), "8am - 10pm", "Chicken");
       firstRestaurant.Save();
-      Restaurant secondRestaurant = new Restaurant("Do the dishes", testCuisine.GetId());
+      Restaurant secondRestaurant = new Restaurant("KFC", testCuisine.GetId(), "8am - 10pm", "Chicken");
       secondRestaurant.Save();
 
 

@@ -32,8 +32,8 @@ namespace CuisineRestaurant.Test
     public void Equals_OverRideTrueForSameName_Restaurant()
     {
       //Arrange, Act
-      Restaurant firstRestaurant = new Restaurant("Wendy's", 1);
-      Restaurant secondRestaurant = new Restaurant("Wendy's", 1);
+      Restaurant firstRestaurant = new Restaurant("Wendy's", 1, "8am - 10pm", "Cheeseburger");
+      Restaurant secondRestaurant = new Restaurant("Wendy's", 1, "8am - 10pm", "Cheeseburger");
 
       //Assert
       Assert.AreEqual(firstRestaurant, secondRestaurant);
@@ -43,7 +43,7 @@ namespace CuisineRestaurant.Test
     public void Save_SavesRestaurantToDatabase_RestaurantList()
     {
       //Arrange
-      Restaurant testRestaurant = new Restaurant("KFC", 100);
+      Restaurant testRestaurant = new Restaurant("KFC", 100, "8am - 10pm", "Chicken");
       testRestaurant.Save();
 
       //Act
@@ -68,7 +68,7 @@ namespace CuisineRestaurant.Test
     public void Save_DatabaseAssignsIdToObject_Id()
     {
       //Arrange
-      Restaurant testRestaurant = new Restaurant("KFC", 1);
+      Restaurant testRestaurant = new Restaurant("KFC", 1, "8am - 10pm", "Chicken");
       testRestaurant.Save();
 
       //Act
@@ -85,7 +85,7 @@ namespace CuisineRestaurant.Test
     public void Find_FindsRestaurantInDatabase_Restaurant()
     {
       //Arrange
-      Restaurant testRestaurant = new Restaurant("KFC", 1);
+      Restaurant testRestaurant = new Restaurant("KFC", 1, "8am - 10pm", "Chicken");
       testRestaurant.Save();
 
       //Act

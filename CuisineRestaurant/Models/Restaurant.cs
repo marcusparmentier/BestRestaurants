@@ -9,12 +9,16 @@ namespace CuisineRestaurant.Models
     private string _name;
     private int _cuisineId;
     private int _id;
+    private string _hours;
+    private string _dish;
 
-    public Restaurant(string name, int cuisineId, int id = 0)
+    public Restaurant(string name, int cuisineId, string hours, string dish, int id = 0)
     {
       _name = name;
       _cuisineId = cuisineId;
       _id = id;
+      _hours = hours;
+      _dish = dish;
     }
 
     public override bool Equals(System.Object otherRestaurant)
@@ -29,7 +33,9 @@ namespace CuisineRestaurant.Models
         bool idEquality = this.GetId() == newRestaurant.GetId();
         bool nameEquality = this.GetName() == newRestaurant.GetName();
         bool cuisineEquality = this.GetCuisineId() == newRestaurant.GetCuisineId();
-        return (idEquality && nameEquality && cuisineEquality);
+        bool hoursEquality = this.GetHours() == newRestaurant.GetHours();
+        bool dishEquality = this.GetDish() == newRestaurant.GetDish();
+        return (idEquality && nameEquality && cuisineEquality && hoursEquality && dishEquality);
       }
     }
 
@@ -53,6 +59,16 @@ namespace CuisineRestaurant.Models
       return _cuisineId;
     }
 
+    public string GetHours()
+    {
+      return _hours;
+    }
+
+    public string GetDish()
+    {
+      return _dish;
+    }
+
 
 
     public static List<Restaurant> GetAll()
@@ -68,7 +84,9 @@ namespace CuisineRestaurant.Models
         string restaurantName = rdr.GetString(0);
         int id = rdr.GetInt32(1);
         int cuisineId = rdr.GetInt32(2);
-        Restaurant newRestaurant = new Restaurant(restaurantName, cuisineId, id);
+        string hours = rdr.GetString(3);
+        string dish = rdr.GetString(4);
+        Restaurant newRestaurant = new Restaurant(restaurantName, cuisineId, hours, dish, id);
         allRestaurant.Add(newRestaurant);
       }
       conn.Close();
@@ -85,7 +103,7 @@ namespace CuisineRestaurant.Models
       conn.Open();
 
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO restaurant (name, cuisineId) VALUES (@name, @cuisineId);";
+      cmd.CommandText = @"INSERT INTO restaurant (name, cuisineId, hours, dish) VALUES (@name, @cuisineId, @hours, @dish);";
 
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
@@ -96,6 +114,16 @@ namespace CuisineRestaurant.Models
       cuisineId.ParameterName = "@cuisineId";
       cuisineId.Value = this._cuisineId;
       cmd.Parameters.Add(cuisineId);
+
+      MySqlParameter hours = new MySqlParameter();
+      hours.ParameterName = "@hours";
+      hours.Value = this._hours;
+      cmd.Parameters.Add(hours);
+
+      MySqlParameter dish = new MySqlParameter();
+      dish.ParameterName = "@dish";
+      dish.Value = this._dish;
+      cmd.Parameters.Add(dish);
 
 
       cmd.ExecuteNonQuery();
@@ -124,14 +152,18 @@ namespace CuisineRestaurant.Models
       int restaurantId = 0;
       string restaurantName = "";
       int restaurantCuisineId = 0;
+      string restaurantHours = "";
+      string restaurantDish = "";
 
       while(rdr.Read())
       {
         restaurantName = rdr.GetString(0);
         restaurantId = rdr.GetInt32(1);
         restaurantCuisineId = rdr.GetInt32(2);
+        restaurantHours = rdr.GetString(3);
+        restaurantDish = rdr.GetString(4);
       }
-      Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
+      Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantHours, restaurantDish, restaurantId);
       conn.Close();
       if (conn != null)
       {
