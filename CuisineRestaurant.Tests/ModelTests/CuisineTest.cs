@@ -5,38 +5,71 @@ using CuisineRestaurant.Models;
 
 namespace CuisineRestaurant.Test
 {
-    [TestClass]
-    public class CuisineTests : IDisposable
+  [TestClass]
+  public class CuisineTests : IDisposable
+  {
+    public CuisineTests()
     {
-        public CuisineTests()
-        {
-          DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=cuisine_restaurant_test;";
-        }
-
-        public void Dispose()
-        {
-          Cuisine.DeleteAll();
-        }
-
-        [TestMethod]
-        public void GetAll_CuisinesEmptyAtFirst_0()
-        {
-            //Arrange, Act
-            int result = Cuisine.GetAll().Count;
-
-            //Assert
-            Assert.AreEqual(0, result);
-        }
-
-        [TestMethod]
-        public void Equals_ReturnsTrueForSameName_Cuisine()
-        {
-          //Arrange, Act
-          Cuisine firstCuisine = new Cuisine("Orange Chicken");
-          Cuisine secondCuisine = new Cuisine("Orange Chicken");
-
-          //Assert
-          Assert.AreEqual(firstCuisine, secondCuisine);
-        }
+      DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=cuisine_restaurant_test;";
     }
+
+    public void Dispose()
+    {
+      Cuisine.DeleteAll();
+    }
+
+    [TestMethod]
+    public void GetAll_CuisinesEmptyAtFirst_0()
+    {
+      //Arrange, Act
+      int result = Cuisine.GetAll().Count;
+
+      //Assert
+      Assert.AreEqual(0, result);
+    }
+
+    [TestMethod]
+    public void Equals_ReturnsTrueForSameName_Cuisine()
+    {
+      //Arrange, Act
+      Cuisine firstCuisine = new Cuisine("Orange Chicken");
+      Cuisine secondCuisine = new Cuisine("Orange Chicken");
+
+      //Assert
+      Assert.AreEqual(firstCuisine, secondCuisine);
+    }
+
+    [TestMethod]
+    public void Save_SavesCuisineToDatabase_CuisineList()
+    {
+      //Arrange
+      Cuisine testCuisine = new Cuisine("Orange Chicken");
+      testCuisine.Save();
+
+      //Act
+      List<Cuisine> result = Cuisine.GetAll();
+      List<Cuisine> testList = new List<Cuisine>{testCuisine};
+
+      //Assert
+      CollectionAssert.AreEqual(testList, result);
+    }
+
+
+    [TestMethod]
+    public void Save_DatabaseAssignsIdToCuisine_Id()
+    {
+      //Arrange
+      Cuisine testCuisine = new Cuisine("Orange Chicken");
+      testCuisine.Save();
+
+      //Act
+      Cuisine savedCuisine = Cuisine.GetAll()[0];
+
+      int result = savedCuisine.GetId();
+      int testId = testCuisine.GetId();
+
+      //Assert
+      Assert.AreEqual(testId, result);
+    }
+  }
 }
