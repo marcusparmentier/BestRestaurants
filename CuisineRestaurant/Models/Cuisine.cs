@@ -15,6 +15,34 @@ namespace CuisineRestaurant.Models
       _id = id;
     }
 
+    public string GetName()
+    {
+      return _name;
+    }
+
+    public int GetId()
+    {
+      return _id;
+    }
+
+    public override bool Equals(System.Object otherCuisine)
+    {
+      if(!(otherCuisine is Cuisine))
+      {
+        return false;
+      }
+      else
+      {
+        Cuisine newCuisine = (Cuisine) otherCuisine;
+        return this.GetId().Equals(newCuisine.GetId());
+      }
+    }
+
+    public override int GetHashCode()
+    {
+      return this.GetId().GetHashCode();
+    }
+
     public static List<Cuisine> GetAll()
     {
       List<Cuisine> allCuisine = new List<Cuisine> {};
@@ -36,6 +64,20 @@ namespace CuisineRestaurant.Models
         conn.Dispose();
       }
       return allCuisine;
+    }
+
+    public static void DeleteAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM cuisine;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
     }
   }
 }
