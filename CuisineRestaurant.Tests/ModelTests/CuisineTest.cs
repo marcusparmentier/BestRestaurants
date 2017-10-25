@@ -71,5 +71,19 @@ namespace CuisineRestaurant.Test
       //Assert
       Assert.AreEqual(testId, result);
     }
+
+    [TestMethod]
+    public void Find_FindsCuisineInDatabase_Cuisine()
+    {
+      //Arrange
+      Cuisine testCuisine = new Cuisine("Orange Chicken");
+      testCuisine.Save();
+
+      //Act
+      Cuisine foundCuisine = Cuisine.Find(testCuisine.GetId());
+
+      //Assert
+      Assert.AreEqual(testCuisine, foundCuisine);
+    }
   }
 }
